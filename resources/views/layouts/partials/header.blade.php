@@ -1,0 +1,42 @@
+    {{-- Header Start--}} 
+
+    <header class="bg-[#01042b] text-white"> 
+
+        <div class="mx-auto flex max-w-5xl items-center justify-between px-6 py-5"> 
+
+            <a href="{{ route('students.index') }}" class="flex items-center gap-3"> 
+
+                <span> 
+
+                    <span class="font-display block text-lg font-black text-[25px] leading-none">Sistem Sekolah</span> 
+
+                    <span class="text-[11px] uppercase tracking-[0.2em] ml-9 text-white/50">Buku Induk Siswa</span> 
+
+                </span> 
+
+            </a> 
+
+            <nav class="hidden gap-8 text-sm md:flex"> 
+
+                <a href="{{ route('students.index') }}" class="text-white/55 hover:text-white">Siswa</a> 
+
+                <a href="{{ route('teachers.index') }}" class="text-white/55 hover:text-white">Guru</a> 
+
+                <a href="{{ route('classes.index') }}" class="text-white/55 hover:text-white">Kelas</a> 
+
+                <a href="{{ route('majors.index') }}" class="text-white/55 hover:text-white">Jurusan</a> 
+
+            </nav> 
+            
+            <form action="{{ route('logout') }}" method="post">
+                @csrf
+                <button type="submit" class="p-2 bg-amber-600 font-semibold rounded-lg ">Logout</button>
+            </form>
+
+        </div> 
+
+        <div class="h-0.5 bg-[#A16207]"></div> 
+
+    </header> 
+
+    {{-- Header End --}} 

@@ -1,0 +1,137 @@
+<?php
+
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MajorController;
+use App\Http\Controllers\SchoolClass\CreateController;
+use App\Http\Controllers\SchoolClass\DestroyController;
+use App\Http\Controllers\SchoolClass\EditController;
+use App\Http\Controllers\SchoolClass\IndexController;
+use App\Http\Controllers\SchoolClass\ShowController;
+use App\Http\Controllers\SchoolClass\StoreController;
+use App\Http\Controllers\SchoolClass\UpdateController;
+use App\Http\Controllers\StudentController;
+use App\Http\Controllers\TeacherController;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+// Authentication
+Route::get('/login', [AuthController::class, 'loginView'])->name('login-view')->middleware('guest');
+Route::post('/login', [AuthController::class, 'loginPost'])->name('login-post')->middleware('guest');
+Route::get('/register', [AuthController::class, 'registerView'])->name('register-view')->middleware('guest');
+Route::post('/register', [AuthController::class, 'registerPost'])->name('register-post')->middleware('guest');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+
+
+
+//Manajemen Data Siswa(Action)
+Route::name('students.')->middleware('role:student,teacher', 'auth')->prefix('students')->group(function(){
+
+
+// Halaman Dafatar Siswa
+Route::get('/', [StudentController::class, 'index'])->name('index');
+
+//Halaman Tambah Siswa
+Route::get('/create',[StudentController::class, 'create'])->name('create');
+
+// Halaman Detail Siswa
+Route::get('/{student}',[StudentController::class, 'show'])->name('show');
+
+//Halaman Edit Siswa
+Route::get('/{student}/edit',[StudentController::class, 'edit'])->name('edit');
+
+
+
+
+//Logika Tambah Siswa
+Route::post('/',[StudentController::class, 'store'])->name('store');
+
+//Logika Edit Siswa
+Route::put('/{student}',[StudentController::class, 'update'])->name('update');
+
+//Logika Menghapus Siswa
+Route::delete('/{student}',[StudentController::class, 'destroy'])->name('destroy');
+
+});
+
+
+
+
+
+
+//Manajemen Data Teacher (Action)
+Route::name('teachers.')->middleware('role:teacher', 'auth')->prefix('teachers')->group(function(){
+
+
+// Halaman Daftar Teacher
+Route::get('/', [TeacherController::class, 'index'])->name('index');
+
+//Halaman Tambah Teacher
+Route::get('/create',[TeacherController::class, 'create'])->name('create');
+
+// Halaman Detail Teacher
+Route::get('/{teacher}',[TeacherController::class, 'show'])->name('show');
+
+//Halaman Edit Teacher
+Route::get('/{teacher}/edit',[TeacherController::class, 'edit'])->name('edit');
+
+
+
+//Logika Tambah Teacher
+Route::post('/',[TeacherController::class, 'store'])->name('store');
+
+//Logika Edit Teacher
+Route::put('/{teacher}',[TeacherController::class, 'update'])->name('update');
+
+//Logika Menghapus Teacher
+Route::delete('/{teacher}',[TeacherController::class, 'destroy'])->name('destroy');
+
+});
+
+
+
+
+
+
+
+//Manajemen Data SchoolClass (Invokable)
+Route::name('classes.')->middleware('role:teacher', 'auth')->prefix('classes')->group(function(){
+
+
+// Halaman Daftar SchoolClass
+Route::get('/', IndexController::class )->name('index');
+
+//Halaman Tambah SchoolClass
+Route::get('/create', CreateController::class)->name('create');
+
+// Halaman Detail SchoolClass
+Route::get('/{id}', ShowController::class)->name('show');
+
+//Halaman Edit SchoolClass
+Route::get('/{id}/edit', EditController::class)->name('edit');
+
+
+
+
+
+//Logika Tambah SchoolClass
+Route::post('/', StoreController::class)->name('store');
+
+//Logika Edit SchoolClass
+Route::put('/{id}', UpdateController::class)->name('update');
+
+//Logika Menghapus SchoolClass
+Route::delete('/{id}', DestroyController::class)->name('destroy');
+
+});
+
+
+
+
+
+//Manajemen Data Major (Resources)
+Route::resource('majors', MajorController::class)->middleware('role:teacher', 'auth');
+
+
